@@ -144,7 +144,13 @@ function renderRefreshes(purchases) {
         refreshMap[dateKey].times.push(p.purchased_time);
     });
 
-    container.innerHTML = Object.entries(refreshMap)
+    // Convert refreshMap → array and sort it by soonest date first
+    const sortedRefreshes = Object.entries(refreshMap).sort(
+        ([dateA], [dateB]) => new Date(dateA) - new Date(dateB)
+    );
+
+
+    container.innerHTML = sortedRefreshes
         .map(([dateStr, data]) => {
             const refreshDate = new Date(dateStr);
             const now = new Date();
@@ -265,7 +271,7 @@ if (onMain) {
             alert("Units must be a positive number.");
             return;
         }
-        
+
         const dispensary = dispensaryInput.value.trim();
         const date = dateInput.value;
         const time = timeInput.value;
