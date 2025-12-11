@@ -303,6 +303,3 @@ if (onMain) {
         window.location.href = "./index.html";
     });
 };
-
-console.log("Current page:", page);
-console.log("onIndex:", onIndex, "onMain:", onMain);
