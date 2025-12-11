@@ -153,6 +153,12 @@ function renderRefreshes(purchases) {
     container.innerHTML = sortedRefreshes
         .map(([dateStr, data]) => {
             const refreshDate = new Date(dateStr);
+            const prettyDate = refreshDate.toLocaleDateString("en-US", {
+                month: "short",
+                day: "numeric",
+                year: "numeric"
+            });
+            
             const now = new Date();
 
             // Normalize times so day comparison is accurate
@@ -193,9 +199,11 @@ function renderRefreshes(purchases) {
                 <div style="margin-bottom:10px;">
                     <strong>${data.units} units</strong> refresh 
                     <strong>${dayLabel}</strong> 
-                    at <strong>${prettyTime}</strong>
+                    at <strong>${prettyTime}</strong> 
+                    on <strong>${prettyDate}</strong>
                 </div>
             `;
+
         })
         .join("");
 }
