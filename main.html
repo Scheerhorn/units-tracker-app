@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Main</title>
+</head>
+
+<body>
+
+    <h1>Units Tracker</h1>
+    <p id="user-email"></p>
+
+
+    <button id="show-form">Add New Purchase</button>
+
+    <form id="purchase-form" style="display:none; margin-top:20px;">
+        <label>Units Used:</label><br />
+        <input id="units" type="number" min="1" /><br /><br />
+
+        <label>Dispensary:</label><br />
+        <input id="dispensary" type="text" /><br /><br />
+
+        <label>Date:</label><br />
+        <input id="date" type="date" /><br /><br />
+
+        <label>Time:</label><br />
+        <input id="time" type="time" /><br /><br />
+
+        <button type="submit">Submit Purchase</button>
+    </form>
+
+    <h2>Upcoming Units</h2>
+        <div id="refresh-list"></div>
+
+    <h2>Your Purchases</h2>
+        <div id="purchases-list"></div>
+
+    
+
+
+
+    <p>This page will eventually contain the full tracker app.</p>
+
+    <button id="logout-button">Logout</button>
+
+    <script type="module" src="app.js"></script>
+</body>
+</html>
