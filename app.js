@@ -259,7 +259,13 @@ if (onMain) {
     purchaseForm?.addEventListener("submit", async (e) => {
         e.preventDefault();
 
-        const units_used = Number(unitsInput.value);
+        const units_used = parseFloat(unitsInput.value);
+        
+        if (isNaN(units_used) || units_used <= 0) {
+            alert("Units must be a positive number.");
+            return;
+        }
+        
         const dispensary = dispensaryInput.value.trim();
         const date = dateInput.value;
         const time = timeInput.value;
