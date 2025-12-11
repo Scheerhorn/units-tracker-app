@@ -1,6 +1,6 @@
 console.log('js is running')
 
-import { createClient } from "https://esm.run/@supabase/supabase-js@2";
+import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
 
 
 const supabase = createClient(
