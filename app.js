@@ -305,6 +305,8 @@ if (onMain) {
         // Reset form
         purchaseForm.reset();
         purchaseForm.style.display = "none";
+
+        loadPurchases();
     });
 
     loadPurchases();
