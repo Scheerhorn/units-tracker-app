@@ -4,13 +4,8 @@ import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
 
 
 const supabase = createClient(
-<<<<<<< HEAD
-  "https://fxpaqqpddrcunxcwnjgk.supabase.co",
-  "sb_publishable_AmyQ5z5fnhOX8KL5pySplQ_Td16NI02"
-=======
     "https://fxpaqqpddrcunxcwnjgk.supabase.co",
     "sb_publishable_AmyQ5z5fnhOX8KL5pySplQ_Td16NI02"
->>>>>>> 858a57c (saving local work before syncing with github)
 );
 
 // Detect which page we're on
