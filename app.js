@@ -162,6 +162,10 @@ function renderRefreshes(purchases) {
             const diffMs = target - today;
             const diffDays = Math.round(diffMs / (1000 * 60 * 60 * 24));
 
+            // Hide refreshes that already passed
+            if (diffDays < 0) return "";
+
+
             let dayLabel;
 
             if (diffDays === 0) {
