@@ -9,8 +9,10 @@ const supabase = createClient(
 );
 
 // Detect which page we're on
-const onIndex = window.location.pathname.includes("index.html") || window.location.pathname === "/";
-const onMain = window.location.pathname.includes("main.html");
+const page = currentPage();
+
+const onIndex = page === "index.html";
+const onMain = page === "main.html";
 
 // --- Check authentication on page load ---
 init();
@@ -23,16 +25,23 @@ async function init() {
     if (session) {
         // User is logged in
         if (onIndex) {
-            window.location.href = "main.html";
+            window.location.href = "./main.html";
         }
         return;
     }
     
     // User NOT logged in
     if (onMain) {
-    window.location.href = "index.html";
+    window.location.href = "./index.html";
     }
 }
+
+// Normalize paths so GitHub Pages works correctly
+function currentPage() {
+    const path = window.location.pathname.split("/").pop();
+    return path === "" ? "index.html" : path;
+}
+
 
 async function loadPurchases() {
     const {
@@ -223,7 +232,7 @@ if (onIndex) {
       return;
     }
 
-    window.location.href = "main.html";
+    window.location.href = "./main.html";
   });
 }
 
@@ -291,6 +300,6 @@ if (onMain) {
     // Logout
     logoutButton?.addEventListener("click", async () => {
         await supabase.auth.signOut();
-        window.location.href = "index.html";
+        window.location.href = "./index.html";
     });
 };
