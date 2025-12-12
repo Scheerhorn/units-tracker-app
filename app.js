@@ -127,94 +127,65 @@ function renderRefreshes(purchases) {
         return;
     }
 
-    const refreshMap = {};
-
-    purchases.forEach(p => {
-        const [year, month, day] = p.refresh_at.split("-").map(Number);
-        const refreshDate = new Date(year, month - 1, day);
-
-        purchases.forEach(p => {
-            const dateKey = p.refresh_at; // already YYYY-MM-DD
-        
-            if (!refreshMap[dateKey]) {
-                refreshMap[dateKey] = {
-                    units: 0,
-                    times: []
-                };
-            }
-        
-            refreshMap[dateKey].units += p.units_used;
-            refreshMap[dateKey].times.push(p.purchased_time);
-        });
+    const sortedPurchases = [...purchases].sort((a, b) => {
+        if (a.refresh_at !== b.refresh_at) {
+            return a.refresh_at.localeCompare(b.refresh_at);
+        }
+        return a.purchased_time.localeCompare(b.purchased_time);
     });
 
-    // Convert refreshMap → array and sort it by soonest date first
-    const sortedRefreshes = Object.entries(refreshMap).sort(
-        ([dateA], [dateB]) => new Date(dateA) - new Date(dateB)
-    );
 
+    container.innerHTML = sortedPurchases
+    .map(p => {
+        // Parse refresh date safely (NO timezone shift)
+        const [y, m, d] = p.refresh_at.split("-").map(Number);
+        const refreshDate = new Date(y, m - 1, d);
 
-    container.innerHTML = sortedRefreshes
-        .map(([dateStr, data]) => {
-            const [y, m, d] = dateStr.split("-").map(Number);
-            const refreshDate = new Date(y, m - 1, d);
+        const prettyDate = refreshDate.toLocaleDateString("en-US", {
+            month: "short",
+            day: "numeric",
+            year: "numeric"
+        });
 
-            const prettyDate = refreshDate.toLocaleDateString("en-US", {
-                month: "short",
-                day: "numeric",
-                year: "numeric"
-            });
-            
-            const now = new Date();
+        // Day difference logic
+        const now = new Date();
+        const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+        const target = new Date(y, m - 1, d);
 
-            // Normalize times so day comparison is accurate
-            const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-            const target = new Date(refreshDate.getFullYear(), refreshDate.getMonth(), refreshDate.getDate());
+        const diffMs = target - today;
+        const diffDays = Math.round(diffMs / (1000 * 60 * 60 * 24));
 
-            const diffMs = target - today;
-            const diffDays = Math.round(diffMs / (1000 * 60 * 60 * 24));
+        if (diffDays < 0) return "";
 
-            // Hide refreshes that already passed
-            if (diffDays < 0) return "";
+        let dayLabel;
+        if (diffDays === 0) {
+            dayLabel = "today";
+        } else if (diffDays === 1) {
+            dayLabel = "tomorrow";
+        } else {
+            dayLabel = `in ${diffDays} days`;
+        }
 
+        // Parse purchased time safely
+        const [hh, mm] = p.purchased_time.split(":").map(Number);
+        const timeDate = new Date(y, m - 1, d, hh, mm);
 
-            let dayLabel;
+        const prettyTime = timeDate.toLocaleTimeString("en-US", {
+            hour: "numeric",
+            minute: "2-digit",
+            hour12: true
+        });
 
-            if (diffDays === 0) {
-                dayLabel = "today";
-            } else if (diffDays === 1) {
-                dayLabel = "tomorrow";
-            } else {
-                dayLabel = `in ${diffDays} days`;
-            }
-
-            // Use the first purchase time for the daily refresh
-            const originalTime = data.times[0];
-            let prettyTime = "";
-
-            if (originalTime) {
-                const [y, m, d] = dateStr.split("-").map(Number);
-                const [hh, mm] = originalTime.split(":").map(Number);
-                const dt = new Date(y, m - 1, d, hh, mm);
-                
-                prettyTime = dt.toLocaleTimeString("en-US", {
-                    hour: "numeric",
-                    minute: "2-digit",
-                    hour12: true
-                });
-            }
-
-            return `
-                <div style="margin-bottom:10px;">
-                    <strong>${data.units} units</strong> refresh 
-                    <strong>${dayLabel}</strong> 
-                    at <strong>${prettyTime}</strong> 
-                    on <strong>${prettyDate}</strong>
-                </div>
-            `;
-
-        })
-        .join("");
+        return `
+            <div style="margin-bottom:10px;">
+                <strong>${p.units_used} units</strong> refresh 
+                <strong>${dayLabel}</strong> 
+                at <strong>${prettyTime}</strong> 
+                on <strong>${prettyDate}</strong>
+            </div>
+        `;
+    })
+    .join("");
 }
 
 
