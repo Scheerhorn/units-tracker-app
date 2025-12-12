@@ -130,18 +130,22 @@ function renderRefreshes(purchases) {
     const refreshMap = {};
 
     purchases.forEach(p => {
-        const refreshDate = new Date(p.refresh_at);
-        const dateKey = refreshDate.toISOString().split("T")[0];
+        const [year, month, day] = p.refresh_at.split("-").map(Number);
+        const refreshDate = new Date(year, month - 1, day);
 
-        if (!refreshMap[dateKey]) {
-            refreshMap[dateKey] = {
-                units: 0,
-                times: []
-            };
-        }
-
-        refreshMap[dateKey].units += p.units_used;
-        refreshMap[dateKey].times.push(p.purchased_time);
+        purchases.forEach(p => {
+            const dateKey = p.refresh_at; // already YYYY-MM-DD
+        
+            if (!refreshMap[dateKey]) {
+                refreshMap[dateKey] = {
+                    units: 0,
+                    times: []
+                };
+            }
+        
+            refreshMap[dateKey].units += p.units_used;
+            refreshMap[dateKey].times.push(p.purchased_time);
+        });
     });
 
     // Convert refreshMap → array and sort it by soonest date first
@@ -152,7 +156,9 @@ function renderRefreshes(purchases) {
 
     container.innerHTML = sortedRefreshes
         .map(([dateStr, data]) => {
-            const refreshDate = new Date(dateStr);
+            const [y, m, d] = dateStr.split("-").map(Number);
+            const refreshDate = new Date(y, m - 1, d);
+
             const prettyDate = refreshDate.toLocaleDateString("en-US", {
                 month: "short",
                 day: "numeric",
@@ -187,7 +193,10 @@ function renderRefreshes(purchases) {
             let prettyTime = "";
 
             if (originalTime) {
-                const dt = new Date(`${dateStr}T${originalTime}`);
+                const [y, m, d] = dateStr.split("-").map(Number);
+                const [hh, mm] = originalTime.split(":").map(Number);
+                const dt = new Date(y, m - 1, d, hh, mm);
+                
                 prettyTime = dt.toLocaleTimeString("en-US", {
                     hour: "numeric",
                     minute: "2-digit",
