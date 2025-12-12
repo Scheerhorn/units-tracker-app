@@ -1,0 +1,109 @@
+:root {
+    --green-soft: #7aa87a;
+    --green-dark: #4c6b4d;
+    --purple-soft: #9f85b8;
+    --purple-dark: #6e4e8d;
+    --offwhite: #f8f7f6;
+    --dark-text: #2c2c2c;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+    background-color: var(--offwhite);
+    color: var(--dark-text);
+    margin: 0;
+    padding: 24px;
+    max-width: 800px;
+    margin-inline: auto;
+}
+
+h1 {
+    color: var(--green-dark);
+    margin-bottom: 4px;
+}
+
+h2 {
+    margin-top: 32px;
+    margin-bottom: 12px;
+    color: var(--purple-dark);
+    border-bottom: 2px solid var(--purple-soft);
+    padding-bottom: 4px;
+}
+
+p {
+    margin-top: 0;
+}
+
+button {
+    background-color: var(--green-soft);
+    color: white;
+    border: none;
+    padding: 8px 14px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.95rem;
+}
+
+button:hover {
+    background-color: var(--green-dark);
+}
+
+button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+#logout-button {
+    margin-top: 32px;
+    background-color: var(--purple-soft);
+}
+
+#logout-button:hover {
+    background-color: var(--purple-dark);
+}
+
+form {
+    background: white;
+    border: 1px solid #ddd;
+    padding: 16px;
+    border-radius: 8px;
+    margin-top: 16px;
+}
+
+label {
+    font-weight: 600;
+}
+
+input {
+    width: 100%;
+    padding: 6px 8px;
+    margin-top: 4px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+}
+
+input:focus {
+    outline: none;
+    border-color: var(--green-soft);
+}
+
+#purchases-list > div,
+#refresh-list > div {
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    padding: 10px 12px;
+    margin-bottom: 10px;
+}
+
+#purchases-list strong {
+    color: var(--green-dark);
+}
+
+#refresh-list strong {
+    color: var(--purple-dark);
+}

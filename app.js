@@ -75,7 +75,7 @@ function renderPurchases(purchases) {
     container.innerHTML = purchases
         .map(p => {
             return `
-                <div style="margin-bottom:10px; border-bottom:1px solid #ccc; padding-bottom:6px;">
+                <div>
                     <strong>${p.purchased_date}</strong>
                     <em>${p.purchased_time}</em><br>
                     ${p.units_used} units @ ${p.dispensary}
@@ -83,7 +83,7 @@ function renderPurchases(purchases) {
                     <button 
                         class="delete-btn" 
                         data-id="${p.id}" 
-                        style="margin-top:5px; color:white; background:red; border:none; padding:4px 8px; cursor:pointer;">
+                        >
                         Delete
                     </button>
                 </div>
@@ -177,7 +177,7 @@ function renderRefreshes(purchases) {
         });
 
         return `
-            <div style="margin-bottom:10px;">
+            <div>
                 <strong>${p.units_used} units</strong> refresh 
                 <strong>${dayLabel}</strong> 
                 at <strong>${prettyTime}</strong> 
