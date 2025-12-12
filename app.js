@@ -80,10 +80,7 @@ function renderPurchases(purchases) {
                     <em>${p.purchased_time}</em><br>
                     ${p.units_used} units @ ${p.dispensary}
                     <br>
-                    <button 
-                        class="delete-btn" 
-                        data-id="${p.id}" 
-                        >
+                    <button class="delete-btn" data-id="${p.id}">
                         Delete
                     </button>
                 </div>
