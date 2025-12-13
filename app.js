@@ -206,29 +206,61 @@ async function showLoggedInEmail() {
 
 // --- Login Logic (only works on index.html) ---
 if (onIndex) {
-  const loginButton = document.getElementById("login-button");
-  const emailInput = document.getElementById("email");
-  const passwordInput = document.getElementById("password");
-  const errorMessage = document.getElementById("error-message");
-
-  loginButton?.addEventListener("click", async () => {
-    errorMessage.textContent = "";
-
-    const email = emailInput.value.trim();
-    const password = passwordInput.value.trim();
-
-    const { error } = await supabase.auth.signInWithPassword({
-      email,
-      password
+    const loginButton = document.getElementById("login-button");
+    const emailInput = document.getElementById("email");
+    const passwordInput = document.getElementById("password");
+    const errorMessage = document.getElementById("error-message");
+    const signupButton = document.getElementById("signup-button");
+    
+    loginButton?.addEventListener("click", async () => {
+        errorMessage.textContent = "";
+    
+        const email = emailInput.value.trim();
+        const password = passwordInput.value.trim();
+    
+        const { error } = await supabase.auth.signInWithPassword({
+            email,
+            password
+        });
+    
+        if (error) {
+            errorMessage.textContent = error.message;
+            return;
+        }
+    
+        window.location.href = "./main.html";
     });
-
-    if (error) {
-      errorMessage.textContent = error.message;
-      return;
-    }
-
-    window.location.href = "./main.html";
-  });
+    
+    signupButton?.addEventListener("click", async () => {
+        errorMessage.textContent = "";
+        
+        const email = emailInput.value.trim();
+        const password = passwordInput.value.trim();
+        
+        if (!email || !password) {
+            errorMessage.textContent = "Email and password are required.";
+            return;
+        }
+        
+        if (password.length < 6) {
+            errorMessage.textContent = "Password must be at least 6 characters.";
+            return;
+        }
+        
+        const { error } = await supabase.auth.signUp({
+            email,
+            password,
+        });
+        
+        if (error) {
+            errorMessage.textContent = error.message;
+            return;
+        }
+        
+        errorMessage.style.color = "green";
+        errorMessage.textContent =
+            "Account created. Check your email to confirm, then log in.";
+    });
 }
 
 // --- Logout Logic (only works on main.html) ---
