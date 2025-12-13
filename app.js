@@ -230,7 +230,7 @@ if (onIndex) {
     
         window.location.href = "./main.html";
     });
-    
+
     signupButton?.addEventListener("click", async () => {
         errorMessage.textContent = "";
         
@@ -250,6 +250,9 @@ if (onIndex) {
         const { error } = await supabase.auth.signUp({
             email,
             password,
+            options: {
+                emailRedirectTo: "https://scheerhorn.github.io/units-tracker-app/"
+            }
         });
         
         if (error) {
