@@ -212,38 +212,51 @@ if (onIndex) {
     const errorMessage = document.getElementById("error-message");
     const signupButton = document.getElementById("signup-button");
     
+    function setAuthLoading(isLoading) {
+        loginButton.disabled = isLoading;
+        signupButton.disabled = isLoading;
+        
+        loginButton.textContent = isLoading ? "Logging in…" : "Login";
+        signupButton.textContent = isLoading ? "Please wait…" : "Create Account";
+    }
+    
     loginButton?.addEventListener("click", async () => {
         errorMessage.textContent = "";
-    
+        setAuthLoading(true);
+        
         const email = emailInput.value.trim();
         const password = passwordInput.value.trim();
-    
+        
         const { error } = await supabase.auth.signInWithPassword({
             email,
-            password
+            password,
         });
-    
+        
         if (error) {
             errorMessage.textContent = error.message;
+            setAuthLoading(false);
             return;
         }
-    
+        
         window.location.href = "./main.html";
     });
-
+    
     signupButton?.addEventListener("click", async () => {
         errorMessage.textContent = "";
+        setAuthLoading(true);
         
         const email = emailInput.value.trim();
         const password = passwordInput.value.trim();
         
         if (!email || !password) {
             errorMessage.textContent = "Email and password are required.";
+            setAuthLoading(false);
             return;
         }
         
         if (password.length < 6) {
             errorMessage.textContent = "Password must be at least 6 characters.";
+            setAuthLoading(false);
             return;
         }
         
@@ -251,18 +264,21 @@ if (onIndex) {
             email,
             password,
             options: {
-                emailRedirectTo: "https://scheerhorn.github.io/units-tracker-app/"
-            }
+            emailRedirectTo: "https://scheerhorn.github.io/units-tracker-app/",
+            },
         });
         
         if (error) {
             errorMessage.textContent = error.message;
+            setAuthLoading(false);
             return;
         }
         
         errorMessage.style.color = "green";
         errorMessage.textContent =
             "Account created. Check your email to confirm, then log in.";
+        
+        setAuthLoading(false);
     });
 }
 
