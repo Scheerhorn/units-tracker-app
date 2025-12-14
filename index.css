@@ -1,7 +1,128 @@
-body {
+/* =========================
+   Shared Palette (main site)
+   ========================= */
+   :root {
+    --green-soft: #7aa87a;
+    --green-dark: #4c6b4d;
+    --purple-soft: #9f85b8;
+    --purple-dark: #6e4e8d;
+    --offwhite: #f8f7f6;
+    --dark-text: #2c2c2c;
+    --border: #ddd;
+  }
+  
+  /* =========================
+     Reset
+     ========================= */
+  * {
+    box-sizing: border-box;
+  }
+  
+  body {
+    margin: 0;
+    min-height: 100vh;
+    background: var(--offwhite);
+    color: var(--dark-text);
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  
+    /* center container */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  /* =========================
+     Login Layout
+     ========================= */
+  body {
+    padding: 16px;
+  }
+  
+  body > * {
+    max-width: 340px;
+    width: 100%;
+  }
+  
+  /* stack everything tightly */
+  body {
+    flex-direction: column;
+    gap: 6px; /* VERY small spacing */
+  }
+  
+  /* =========================
+     Typography
+     ========================= */
+  h1 {
+    margin: 0 0 8px 0;
+    font-size: 1.3rem;
+    color: var(--green-dark);
     text-align: center;
-}
-
-input {
-    max-width: 300px;
-}
+  }
+  
+  /* =========================
+     Form Controls
+     ========================= */
+  label {
+    font-size: 0.8rem;
+    font-weight: 600;
+  }
+  
+  input {
+    width: 100%;
+    padding: 5px 7px;   /* compact */
+    font-size: 0.8rem;
+    border-radius: 4px;
+    border: 1px solid var(--border);
+    background: white;
+  }
+  
+  input:focus {
+    outline: none;
+    border-color: var(--green-soft);
+  }
+  
+  /* kill <br> spacing completely */
+  br {
+    display: none;
+  }
+  
+  /* =========================
+     Buttons
+     ========================= */
+  button {
+    width: 100%;
+    padding: 6px 10px;
+    font-size: 0.8rem;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+  }
+  
+  #login-button {
+    background: var(--green-soft);
+    color: white;
+  }
+  
+  #login-button:hover {
+    background: var(--green-dark);
+  }
+  
+  #signup-button {
+    background: var(--purple-soft);
+    color: white;
+  }
+  
+  #signup-button:hover {
+    background: var(--purple-dark);
+  }
+  
+  /* =========================
+     Error Message
+     ========================= */
+  #error-message {
+    margin-top: 4px;
+    font-size: 0.75rem;
+    color: #c94a4a;
+    text-align: center;
+  }
+  
