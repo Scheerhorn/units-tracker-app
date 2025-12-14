@@ -3,39 +3,46 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
+    
     <title>Mississippi Cannabis Unit Tracker</title>
-
+    
     <!-- Open Graph -->
     <meta property="og:type" content="website" />
     <meta property="og:title" content="MS Medical Cannabis Units Tracker" />
     <meta property="og:description" content="Track your 28-unit medical cannabis allotment. Purchases, refresh dates, and remaining units — automatically." />
     <meta property="og:url" content="https://dudewheresmyunits.com/" />
     <meta property="og:image" content="https://dudewheresmyunits.com/testsquare.png" />
-
+    
     <link rel="stylesheet" href="index.css">
 </head>
 
 <body>
-
-    <h1>Unit Tracker Login</h1>
-
-    <label>Email:</label>
-    <input id="email" type="email" />
-
-    <label>Password:</label>
-    <input id="password" type="password" />
-
-    <button id="login-button">Login</button>
     
-    <button id="signup-button">Create Account</button>
-
-    <p id="error-message" style="color:red;"></p>
-
-    <script type="module">
-        console.log('js is working');
-    </script>
-
+    <form class="login-form">
+        <h1>Unit Tracker Login</h1>
+        
+        <div class="field">
+            <label for="email">Email</label>
+            <input id="email" type="email" autocomplete="email" />
+        </div>
+        
+        <div class="field">
+            <label for="password">Password</label>
+            <input id="password" type="password" autocomplete="current-password" />
+        </div>
+        
+        <button id="login-button" type="button">
+            Login
+        </button>
+        
+        <button id="signup-button" type="button">
+            Create Account
+        </button>
+        
+        <p id="error-message"></p>
+    </form>
+    
     <script type="module" src="app.js"></script>
 </body>
+
 </html>

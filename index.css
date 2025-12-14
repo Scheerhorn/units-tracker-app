@@ -22,54 +22,51 @@
     margin: 0;
     min-height: 100vh;
     background: var(--offwhite);
-    color: var(--dark-text);
     font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+    color: var(--dark-text);
   
-    /* center container */
     display: flex;
-    justify-content: center;
     align-items: center;
+    justify-content: center;
   }
   
   /* =========================
-     Login Layout
+     Login Form
      ========================= */
-  body {
-    padding: 16px;
-  }
-  
-  body > * {
-    max-width: 340px;
+  .login-form {
     width: 100%;
-  }
+    max-width: 340px;
   
-  /* stack everything tightly */
-  body {
+    display: flex;
     flex-direction: column;
-    gap: 6px; /* VERY small spacing */
+    gap: 6px; /* very tight spacing */
+
+    padding: 2rem;
   }
   
-  /* =========================
-     Typography
-     ========================= */
-  h1 {
-    margin: 0 0 8px 0;
+  .login-form h1 {
+    margin: 0 0 6px 0;
+    text-align: center;
     font-size: 1.3rem;
     color: var(--green-dark);
-    text-align: center;
   }
   
   /* =========================
-     Form Controls
+     Fields
      ========================= */
+  .field {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+  
   label {
-    font-size: 0.8rem;
+    font-size: 0.75rem;
     font-weight: 600;
   }
   
   input {
-    width: 100%;
-    padding: 5px 7px;   /* compact */
+    padding: 5px 7px;
     font-size: 0.8rem;
     border-radius: 4px;
     border: 1px solid var(--border);
@@ -81,16 +78,10 @@
     border-color: var(--green-soft);
   }
   
-  /* kill <br> spacing completely */
-  br {
-    display: none;
-  }
-  
   /* =========================
      Buttons
      ========================= */
   button {
-    width: 100%;
     padding: 6px 10px;
     font-size: 0.8rem;
     border-radius: 6px;
@@ -101,6 +92,7 @@
   #login-button {
     background: var(--green-soft);
     color: white;
+    margin-top: 4px;
   }
   
   #login-button:hover {
@@ -120,7 +112,7 @@
      Error Message
      ========================= */
   #error-message {
-    margin-top: 4px;
+    margin: 2px 0 0;
     font-size: 0.75rem;
     color: #c94a4a;
     text-align: center;
