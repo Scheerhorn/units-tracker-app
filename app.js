@@ -206,81 +206,129 @@ async function showLoggedInEmail() {
 
 // --- Login Logic (only works on index.html) ---
 if (onIndex) {
+    const form = document.querySelector(".login-form");
     const loginButton = document.getElementById("login-button");
     const emailInput = document.getElementById("email");
     const passwordInput = document.getElementById("password");
     const errorMessage = document.getElementById("error-message");
     const signupButton = document.getElementById("signup-button");
-    
+  
+    const forgotButton = document.getElementById("forgot-button");
+    const resetMessage = document.getElementById("reset-message");
+  
     function setAuthLoading(isLoading) {
-        loginButton.disabled = isLoading;
-        signupButton.disabled = isLoading;
-        
-        loginButton.textContent = isLoading ? "Logging in…" : "Login";
-        signupButton.textContent = isLoading ? "Please wait…" : "Create Account";
+      loginButton.disabled = isLoading;
+      signupButton.disabled = isLoading;
+      if (forgotButton) forgotButton.disabled = isLoading;
+  
+      loginButton.textContent = isLoading ? "Logging in…" : "Login";
+      signupButton.textContent = isLoading ? "Please wait…" : "Create Account";
+      if (forgotButton) forgotButton.textContent = isLoading ? "Please wait…" : "Forgot password?";
     }
-    
-    loginButton?.addEventListener("click", async () => {
-        errorMessage.textContent = "";
-        setAuthLoading(true);
-        
-        const email = emailInput.value.trim();
-        const password = passwordInput.value.trim();
-        
-        const { error } = await supabase.auth.signInWithPassword({
-            email,
-            password,
-        });
-        
-        if (error) {
-            errorMessage.textContent = error.message;
-            setAuthLoading(false);
-            return;
-        }
-        
-        window.location.href = "./main.html";
-    });
-    
-    signupButton?.addEventListener("click", async () => {
-        errorMessage.textContent = "";
-        setAuthLoading(true);
-        
-        const email = emailInput.value.trim();
-        const password = passwordInput.value.trim();
-        
-        if (!email || !password) {
-            errorMessage.textContent = "Email and password are required.";
-            setAuthLoading(false);
-            return;
-        }
-        
-        if (password.length < 6) {
-            errorMessage.textContent = "Password must be at least 6 characters.";
-            setAuthLoading(false);
-            return;
-        }
-        
-        const { error } = await supabase.auth.signUp({
-            email,
-            password,
-            options: {
-            emailRedirectTo: "https://scheerhorn.github.io/units-tracker-app/",
-            },
-        });
-        
-        if (error) {
-            errorMessage.textContent = error.message;
-            setAuthLoading(false);
-            return;
-        }
-        
-        errorMessage.style.color = "green";
-        errorMessage.textContent =
-            "Account created. Check your email to confirm, then log in.";
-        
+  
+    function getResetRedirectUrl() {
+      // Supports both:
+      // - https://scheerhorn.github.io/units-tracker-app/
+      // - https://dudewheresmyunits.com/
+      const isProjectPath = window.location.pathname.includes("/units-tracker-app/");
+      const base = isProjectPath ? "/units-tracker-app" : "";
+      return `${window.location.origin}${base}/reset.html`;
+    }
+  
+    form?.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      errorMessage.textContent = "";
+      if (resetMessage) resetMessage.textContent = "";
+  
+      setAuthLoading(true);
+  
+      const email = emailInput.value.trim();
+      const password = passwordInput.value.trim();
+  
+      const { error } = await supabase.auth.signInWithPassword({ email, password });
+  
+      if (error) {
+        errorMessage.textContent = error.message;
         setAuthLoading(false);
+        return;
+      }
+  
+      window.location.href = "./main.html";
     });
-}
+  
+    signupButton?.addEventListener("click", async () => {
+      errorMessage.textContent = "";
+      if (resetMessage) resetMessage.textContent = "";
+      setAuthLoading(true);
+  
+      const email = emailInput.value.trim();
+      const password = passwordInput.value.trim();
+  
+      if (!email || !password) {
+        errorMessage.textContent = "Email and password are required.";
+        setAuthLoading(false);
+        return;
+      }
+  
+      if (password.length < 6) {
+        errorMessage.textContent = "Password must be at least 6 characters.";
+        setAuthLoading(false);
+        return;
+      }
+  
+      const { error } = await supabase.auth.signUp({
+        email,
+        password,
+        options: {
+          emailRedirectTo: `${window.location.origin}${window.location.pathname.includes("/units-tracker-app/") ? "/units-tracker-app" : ""}/`,
+        },
+      });
+  
+      if (error) {
+        errorMessage.textContent = error.message;
+        setAuthLoading(false);
+        return;
+      }
+  
+      errorMessage.style.color = "green";
+      errorMessage.textContent = "Account created. Check your email to confirm, then log in.";
+      setAuthLoading(false);
+    });
+  
+    forgotButton?.addEventListener("click", async () => {
+      errorMessage.textContent = "";
+      if (resetMessage) {
+        resetMessage.style.color = "";
+        resetMessage.textContent = "";
+      }
+  
+      const email = emailInput.value.trim();
+      if (!email) {
+        errorMessage.textContent = "Enter your email first, then click “Forgot password?”.";
+        return;
+      }
+  
+      setAuthLoading(true);
+  
+      const { error } = await supabase.auth.resetPasswordForEmail(email, {
+        redirectTo: getResetRedirectUrl(),
+      });
+  
+      if (error) {
+        errorMessage.textContent = error.message;
+        setAuthLoading(false);
+        return;
+      }
+  
+      if (resetMessage) {
+        resetMessage.style.color = "green";
+        resetMessage.textContent = "Password reset email sent. Check your inbox.";
+      }
+  
+      setAuthLoading(false);
+    });
+  }
+  
 
 // --- Logout Logic (only works on main.html) ---
 if (onMain) {
